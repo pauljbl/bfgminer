@@ -512,25 +512,6 @@ void bitfury_do_io(struct thr_info * const master_thr)
 				ns = (double)period / (double)(cycles);
 				bitfury->mhz = 1.0 / ns * 65.0 * 1000.0;
 				
-				if (bitfury->mhz_best)
-				{
-					const double mhz_half_best = bitfury->mhz_best / 2;
-					if (bitfury->mhz < mhz_half_best && bitfury->mhz_last < mhz_half_best)
-					{
-						applog(LOG_WARNING, "%"PRIpreprv": Frequency drop over 50%% detected, reinitialising",
-						       proc->proc_repr);
-						bitfury->force_reinit = true;
-					}
-				}
-				if ((int)bitfury->mhz > bitfury->mhz_best && bitfury->mhz_last > bitfury->mhz_best)
-				{
-					// mhz_best is the lowest of two sequential readings over the previous best
-					if ((int)bitfury->mhz > bitfury->mhz_last)
-						bitfury->mhz_best = bitfury->mhz_last;
-					else
-						bitfury->mhz_best = bitfury->mhz;
-				}
-				bitfury->mhz_last = bitfury->mhz;
 				
 				bitfury->counter1 = counter;
 				copy_time(&(bitfury->timer1), &tv_now);
